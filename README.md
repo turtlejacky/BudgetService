@@ -21,12 +21,13 @@ specification by example.
 if any question need to clarify, please reach me thanks
 
 restrict:
-BudgetService
-+TotalAmount(DateTime, DateTime):double
+---
+- BudgetService
+- +TotalAmount(DateTime, DateTime):double
 
-Budget
-+YearMonth:string
-+Amount:int
+- Budget
+- +YearMonth:string
+- +Amount:int
 
-BudgetRepository:IBudgetRepository
-+GetAll()
+- BudgetRepository:IBudgetRepository
+- +GetAll()
