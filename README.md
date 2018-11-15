@@ -22,12 +22,12 @@ if any question need to clarify, please reach me thanks
 
 restrict:
 ---
-- BudgetService
-- +TotalAmount(DateTime, DateTime):double
+- BudgetService<br>
++TotalAmount(DateTime, DateTime):double
 
-- Budget
-- +YearMonth:string
-- +Amount:int
+- Budget<br>
++YearMonth:string<br>
++Amount:int
 
-- BudgetRepository:IBudgetRepository
-- +GetAll()
+- BudgetRepository:IBudgetRepository<br>
++GetAll()
