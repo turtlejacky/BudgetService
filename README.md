@@ -8,7 +8,7 @@ specification by example.
 ---
 1. input two datetime to query TotalAmount();
 2. the budget is set to hole month, 
-   - ex: 300 for "201804", 30 for "201805"
+   - ex: 300 for "201804", 31 for "201805"
 3. need to handle startDate bigger than endDate,
    - ex: 300 for "201804", query 2018/04/30" to 2018/04/01, return 0
 4. Amount query is by days. 
@@ -19,6 +19,10 @@ specification by example.
    - ex: 31 for "201805", 300 for "201804", query date is 2018/04/30 to 2018/05/02, the result is 10+2=12
 
 you might need to create a fake repository to pass test. because the data repository is not implement yet.
+<br>
+the days in month is according to real world setting, ex: 30 days for "201804", 28 days for "201802"
+<br>
+assume the budget could be divisible, no need to consider decimal point.
 <br>
 <br>
 if any question need to clarify, please reach me thanks
