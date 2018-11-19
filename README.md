@@ -19,16 +19,18 @@ specification by example.
    - ex: 31 for "201805", 300 for "201804", query date is 2018/04/30 to 2018/05/02, the result is 10+2=12
 
 you might need to create a fake repository to pass test. because the data repository is not implement yet.
+<br>
+<br>
 if any question need to clarify, please reach me thanks
 
 restrict:
 ---
-- BudgetService<br>
+- class BudgetService<br>
 +TotalAmount(DateTime, DateTime):double
 
-- Budget<br>
+- class Budget<br>
 +YearMonth:string<br>
 +Amount:int
 
-- BudgetRepository:IBudgetRepository<br>
+- class BudgetRepository:IBudgetRepository<br>
 +GetAll()
