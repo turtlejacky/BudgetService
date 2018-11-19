@@ -18,6 +18,7 @@ specification by example.
 6. if query cross month, should sum each month's budget, 
    - ex: 31 for "201805", 300 for "201804", query date is 2018/04/30 to 2018/05/02, the result is 10+2=12
 
+you might need to create a fake repository to pass test. because the data repository is not implement yet.
 if any question need to clarify, please reach me thanks
 
 restrict:
