@@ -43,13 +43,19 @@ namespace BudgetServiceTdd
 				var budget = budgets.FirstOrDefault(x => x.YearMonth == yearMonth);
 				if (budget != null)
 				{
-					var dailyAmount = budget.Amount / budget.DaysInMonth;
+					var dailyAmount = DailyAmount(budget);
 					var intervalDays = period.OverlappingDays(currentMonth);
 					yield return intervalDays * dailyAmount;
 				}
 
 				currentMonth = currentMonth.AddMonths(1);
 			} while (currentMonth <= period.EndDate);
+		}
+
+		private static int DailyAmount(Budget budget)
+		{
+			var dailyAmount = budget.Amount / budget.DaysInMonth;
+			return dailyAmount;
 		}
 	}
 }
