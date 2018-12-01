@@ -4,18 +4,6 @@ using System.Linq;
 
 namespace BudgetServiceTdd
 {
-	public class Period
-	{
-		public Period(DateTime startDate, DateTime endDate)
-		{
-			StartDate = startDate;
-			EndDate = endDate;
-		}
-
-		public DateTime StartDate { get; private set; }
-		public DateTime EndDate { get; private set; }
-	}
-
 	public class BudgetService
 	{
 		private readonly Dictionary<string, int> _budgetLookUp;
@@ -54,40 +42,11 @@ namespace BudgetServiceTdd
 			{
 				var yearMonth = currentMonth.Year + TransToDateFormat(currentMonth.Month);
 				var dailyAmount = _budgetLookUp.ContainsKey(yearMonth) ? _budgetLookUp[yearMonth] : 0;
-				var intervalDays = OverlappingDays(period, currentMonth);
+				var intervalDays = period.OverlappingDays(currentMonth);
 				yield return intervalDays * dailyAmount;
 
 				currentMonth = currentMonth.AddMonths(1);
 			} while (currentMonth <= period.EndDate);
-		}
-
-		private static int OverlappingDays(Period period, DateTime currentMonth)
-		{
-			int intervalDays;
-			if (IsLastMonth(period.EndDate, currentMonth))
-			{
-				intervalDays = period.EndDate.Day;
-			}
-			else if (IsFirstMonth(period.StartDate, currentMonth))
-			{
-				intervalDays = (DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month) - period.StartDate.Day + 1);
-			}
-			else
-			{
-				intervalDays = DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month);
-			}
-
-			return intervalDays;
-		}
-
-		private static bool IsFirstMonth(DateTime startDate, DateTime currentMonth)
-		{
-			return currentMonth.Month == startDate.Month && currentMonth.Year == startDate.Year;
-		}
-
-		private static bool IsLastMonth(DateTime endDate, DateTime currentMonth)
-		{
-			return currentMonth.Month == endDate.Month && currentMonth.Year == endDate.Year;
 		}
 
 		private string TransToDateFormat(int i)
