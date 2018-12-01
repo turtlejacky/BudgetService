@@ -15,6 +15,10 @@ namespace BudgetServiceTdd
 
 		public int OverlappingDays(DateTime currentMonth)
 		{
+			if (StartDate > EndDate)
+			{
+				return 0;
+			}
 			int intervalDays = 0;
 			if (IsLastMonth(EndDate, currentMonth))
 			{

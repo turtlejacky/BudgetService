@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace BudgetServiceTdd
@@ -13,18 +12,11 @@ namespace BudgetServiceTdd
 			_budgetRepository = budgetRepository;
 		}
 
-
 		public double TotalAmount(DateTime start, DateTime end)
 		{
-			return start > end ? 0 : GetYearMonthList(start, end).Sum();
+			var period = new Period(start, end);
+			return _budgetRepository.GetAll() .Select(b => b.DailyAmount() * period.OverlappingDays(b.YearMonthInDateTime)).Sum();
 		}
 
-		// primitive obsession, data clump, duplication
-		private IEnumerable<int> GetYearMonthList(DateTime startDate, DateTime endDate)
-		{
-			var period = new Period(startDate, endDate);
-			return _budgetRepository.GetAll()
-				.Select(b => b.DailyAmount() * period.OverlappingDays(b.YearMonthInDateTime));
-		}
 	}
 }
