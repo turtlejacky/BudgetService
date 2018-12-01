@@ -36,30 +36,29 @@ namespace BudgetServiceTdd
 		// primitive obsession, data clump, duplication
 		private IEnumerable<int> GetYearMonthList(DateTime startDate, DateTime endDate)
 		{
-			for (var year = startDate.Year; year <= endDate.Year; year++)
+			var currentMonth = DateTime.ParseExact(startDate.ToString("yyyyMM") + "01", "yyyyMMdd", null);
+			do
 			{
-				var startMonth = year == startDate.Year ? startDate.Month : 1;
-				var endMonth = year == endDate.Year ? endDate.Month : 12;
-				for (var month = startMonth; month <= endMonth; month++)
+				var year = currentMonth.Year;
+				var yearMonth = year + TransToDateFormat(currentMonth.Month);
+				var dailyAmount = _budgetLookUp.ContainsKey(yearMonth) ? _budgetLookUp[yearMonth] : 0;
+				int intervalDays;
+				if (IsLastMonth(endDate, currentMonth.Month, year))
 				{
-					var yearMonth = year + TransToDateFormat(month);
-					var dailyAmount = _budgetLookUp.ContainsKey(yearMonth) ? _budgetLookUp[yearMonth] : 0;
-					int intervalDays;
-					if (IsLastMonth(endDate, month, year))
-					{
-						intervalDays = endDate.Day;
-					}
-					else if (IsFirstMonth(startDate, month, year))
-					{
-						intervalDays = (DateTime.DaysInMonth(year, month) - startDate.Day + 1);
-					}
-					else
-					{
-						intervalDays = DateTime.DaysInMonth(year, month);
-					}
-					yield return intervalDays * dailyAmount;
+					intervalDays = endDate.Day;
 				}
-			}
+				else if (IsFirstMonth(startDate, currentMonth.Month, year))
+				{
+					intervalDays = (DateTime.DaysInMonth(year, currentMonth.Month) - startDate.Day + 1);
+				}
+				else
+				{
+					intervalDays = DateTime.DaysInMonth(year, currentMonth.Month);
+				}
+				yield return intervalDays * dailyAmount;
+
+				currentMonth = currentMonth.AddMonths(1);
+			} while (currentMonth <= endDate);
 		}
 
 		private bool IsFirstMonth(DateTime start, int month, int year)
