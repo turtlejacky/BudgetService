@@ -15,11 +15,11 @@ namespace BudgetServiceTdd
 
 		public int OverlappingDays(DateTime currentMonth)
 		{
-			if (StartDate > EndDate)
+			if (InvalidDate())
 			{
 				return 0;
 			}
-			int intervalDays = 0;
+			var intervalDays = 0;
 			if (IsLastMonth(EndDate, currentMonth))
 			{
 				intervalDays = EndDate.Day;
@@ -34,6 +34,11 @@ namespace BudgetServiceTdd
 			}
 
 			return intervalDays;
+		}
+
+		private bool InvalidDate()
+		{
+			return StartDate > EndDate;
 		}
 
 		private static bool IsFirstMonth(DateTime startDate, DateTime currentMonth)
