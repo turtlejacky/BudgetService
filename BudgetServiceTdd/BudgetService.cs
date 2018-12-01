@@ -4,6 +4,18 @@ using System.Linq;
 
 namespace BudgetServiceTdd
 {
+	public class Period
+	{
+		public Period(DateTime startDate, DateTime endDate)
+		{
+			StartDate = startDate;
+			EndDate = endDate;
+		}
+
+		public DateTime StartDate { get; private set; }
+		public DateTime EndDate { get; private set; }
+	}
+
 	public class BudgetService
 	{
 		private readonly Dictionary<string, int> _budgetLookUp;
@@ -41,23 +53,23 @@ namespace BudgetServiceTdd
 			{
 				var yearMonth = currentMonth.Year + TransToDateFormat(currentMonth.Month);
 				var dailyAmount = _budgetLookUp.ContainsKey(yearMonth) ? _budgetLookUp[yearMonth] : 0;
-				var intervalDays = OverlappingDays(startDate, endDate, currentMonth);
+				var intervalDays = OverlappingDays(new Period(startDate, endDate), currentMonth);
 				yield return intervalDays * dailyAmount;
 
 				currentMonth = currentMonth.AddMonths(1);
 			} while (currentMonth <= endDate);
 		}
 
-		private static int OverlappingDays(DateTime startDate, DateTime endDate, DateTime currentMonth)
+		private static int OverlappingDays(Period period, DateTime currentMonth)
 		{
 			int intervalDays;
-			if (IsLastMonth(endDate, currentMonth))
+			if (IsLastMonth(period.EndDate, currentMonth))
 			{
-				intervalDays = endDate.Day;
+				intervalDays = period.EndDate.Day;
 			}
-			else if (IsFirstMonth(startDate, currentMonth))
+			else if (IsFirstMonth(period.StartDate, currentMonth))
 			{
-				intervalDays = (DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month) - startDate.Day + 1);
+				intervalDays = (DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month) - period.StartDate.Day + 1);
 			}
 			else
 			{
