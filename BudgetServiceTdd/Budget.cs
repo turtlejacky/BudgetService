@@ -15,5 +15,11 @@ namespace BudgetServiceTdd
 				return DateTime.DaysInMonth(yearMonthInDateTime.Year, yearMonthInDateTime.Month);
 			}
 		}
+
+		public int DailyAmount()
+		{
+			var dailyAmount = Amount / DaysInMonth;
+			return dailyAmount;
+		}
 	}
 }
