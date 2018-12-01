@@ -48,16 +48,17 @@ namespace BudgetServiceTdd
 		// primitive obsession, data clump, duplication
 		private IEnumerable<int> GetYearMonthList(DateTime startDate, DateTime endDate)
 		{
-			var currentMonth = DateTime.ParseExact(startDate.ToString("yyyyMM") + "01", "yyyyMMdd", null);
+			var period = new Period(startDate, endDate);
+			var currentMonth = DateTime.ParseExact(period.StartDate.ToString("yyyyMM") + "01", "yyyyMMdd", null);
 			do
 			{
 				var yearMonth = currentMonth.Year + TransToDateFormat(currentMonth.Month);
 				var dailyAmount = _budgetLookUp.ContainsKey(yearMonth) ? _budgetLookUp[yearMonth] : 0;
-				var intervalDays = OverlappingDays(new Period(startDate, endDate), currentMonth);
+				var intervalDays = OverlappingDays(period, currentMonth);
 				yield return intervalDays * dailyAmount;
 
 				currentMonth = currentMonth.AddMonths(1);
-			} while (currentMonth <= endDate);
+			} while (currentMonth <= period.EndDate);
 		}
 
 		private static int OverlappingDays(Period period, DateTime currentMonth)
