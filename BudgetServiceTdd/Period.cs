@@ -4,10 +4,13 @@ namespace BudgetServiceTdd
 {
 	public class Period
 	{
+		private readonly MonthHandler _monthHandler;
+
 		public Period(DateTime startDate, DateTime endDate)
 		{
 			StartDate = startDate;
 			EndDate = endDate;
+			_monthHandler = InitialMonthHandler();
 		}
 
 		public DateTime StartDate { get; private set; }
@@ -19,21 +22,20 @@ namespace BudgetServiceTdd
 			{
 				return 0;
 			}
-			var intervalDays = 0;
-			if (queryMonth.Month == EndDate.Month && queryMonth.Year == EndDate.Year)
-			{
-				intervalDays = EndDate.Day;
-			}
-			else if (queryMonth.Month == StartDate.Month && queryMonth.Year == StartDate.Year)
-			{
-				intervalDays = (DateTime.DaysInMonth(queryMonth.Year, queryMonth.Month) - StartDate.Day + 1);
-			}
-			else if (queryMonth > StartDate && queryMonth < EndDate)
-			{
-				intervalDays = DateTime.DaysInMonth(queryMonth.Year, queryMonth.Month);
-			}
 
-			return intervalDays;
+			return _monthHandler.Handle(this, queryMonth);
+		}
+
+		private MonthHandler InitialMonthHandler()
+		{
+			var lastMonthHandler = new LastMonthHandler();
+			var firstMonthHandler = new FirstMonthHandler();
+			var betweenMonthHandler = new BetweenMonthHandler();
+
+			lastMonthHandler.Successor = firstMonthHandler;
+			firstMonthHandler.Successor = betweenMonthHandler;
+
+			return lastMonthHandler;
 		}
 
 		private bool InvalidDate()
