@@ -39,36 +39,25 @@ namespace BudgetServiceTdd
 			var currentMonth = DateTime.ParseExact(startDate.ToString("yyyyMM") + "01", "yyyyMMdd", null);
 			do
 			{
-				var year = currentMonth.Year;
-				var yearMonth = year + TransToDateFormat(currentMonth.Month);
+				var yearMonth = currentMonth.Year + TransToDateFormat(currentMonth.Month);
 				var dailyAmount = _budgetLookUp.ContainsKey(yearMonth) ? _budgetLookUp[yearMonth] : 0;
 				int intervalDays;
-				if (IsLastMonth(endDate, currentMonth.Month, year))
+				if (currentMonth.Month == endDate.Month && currentMonth.Year == endDate.Year)
 				{
 					intervalDays = endDate.Day;
 				}
-				else if (IsFirstMonth(startDate, currentMonth.Month, year))
+				else if (currentMonth.Month == startDate.Month && currentMonth.Year == startDate.Year)
 				{
-					intervalDays = (DateTime.DaysInMonth(year, currentMonth.Month) - startDate.Day + 1);
+					intervalDays = (DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month) - startDate.Day + 1);
 				}
 				else
 				{
-					intervalDays = DateTime.DaysInMonth(year, currentMonth.Month);
+					intervalDays = DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month);
 				}
 				yield return intervalDays * dailyAmount;
 
 				currentMonth = currentMonth.AddMonths(1);
 			} while (currentMonth <= endDate);
-		}
-
-		private bool IsFirstMonth(DateTime start, int month, int year)
-		{
-			return month == start.Month && year == start.Year;
-		}
-
-		private bool IsLastMonth(DateTime endDate, int month, int year)
-		{
-			return month == endDate.Month && year == endDate.Year;
 		}
 
 		private string TransToDateFormat(int i)
