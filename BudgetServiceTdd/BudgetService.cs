@@ -42,11 +42,11 @@ namespace BudgetServiceTdd
 				var yearMonth = currentMonth.Year + TransToDateFormat(currentMonth.Month);
 				var dailyAmount = _budgetLookUp.ContainsKey(yearMonth) ? _budgetLookUp[yearMonth] : 0;
 				int intervalDays;
-				if (currentMonth.Month == endDate.Month && currentMonth.Year == endDate.Year)
+				if (IsLastMonth(endDate, currentMonth))
 				{
 					intervalDays = endDate.Day;
 				}
-				else if (currentMonth.Month == startDate.Month && currentMonth.Year == startDate.Year)
+				else if (IsFirstMonth(startDate, currentMonth))
 				{
 					intervalDays = (DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month) - startDate.Day + 1);
 				}
@@ -58,6 +58,16 @@ namespace BudgetServiceTdd
 
 				currentMonth = currentMonth.AddMonths(1);
 			} while (currentMonth <= endDate);
+		}
+
+		private static bool IsFirstMonth(DateTime startDate, DateTime currentMonth)
+		{
+			return currentMonth.Month == startDate.Month && currentMonth.Year == startDate.Year;
+		}
+
+		private static bool IsLastMonth(DateTime endDate, DateTime currentMonth)
+		{
+			return currentMonth.Month == endDate.Month && currentMonth.Year == endDate.Year;
 		}
 
 		private string TransToDateFormat(int i)
