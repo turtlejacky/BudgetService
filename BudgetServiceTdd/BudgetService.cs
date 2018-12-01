@@ -6,13 +6,11 @@ namespace BudgetServiceTdd
 {
 	public class BudgetService
 	{
-		private readonly Dictionary<string, int> _budgetLookUp;
 		private readonly IBudgetRepository _budgetRepository;
 
 		public BudgetService(IBudgetRepository budgetRepository)
 		{
 			_budgetRepository = budgetRepository;
-			_budgetLookUp = SetBudgetToLookUp();
 		}
 
 		public Dictionary<string, int> SetBudgetToLookUp()
@@ -40,10 +38,15 @@ namespace BudgetServiceTdd
 			var currentMonth = DateTime.ParseExact(period.StartDate.ToString("yyyyMM") + "01", "yyyyMMdd", null);
 			do
 			{
+				var budgets = _budgetRepository.GetAll();
 				var yearMonth = currentMonth.ToString("yyyyMM");
-				var dailyAmount = _budgetLookUp.ContainsKey(yearMonth) ? _budgetLookUp[yearMonth] : 0;
-				var intervalDays = period.OverlappingDays(currentMonth);
-				yield return intervalDays * dailyAmount;
+				var budget = budgets.FirstOrDefault(x => x.YearMonth == yearMonth);
+				if (budget != null)
+				{
+					var dailyAmount = budget.Amount / budget.DaysInMonth;
+					var intervalDays = period.OverlappingDays(currentMonth);
+					yield return intervalDays * dailyAmount;
+				}
 
 				currentMonth = currentMonth.AddMonths(1);
 			} while (currentMonth <= period.EndDate);
