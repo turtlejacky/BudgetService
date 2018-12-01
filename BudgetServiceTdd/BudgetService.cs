@@ -36,15 +36,14 @@ namespace BudgetServiceTdd
 		{
 			var period = new Period(startDate, endDate);
 			var currentMonth = DateTime.ParseExact(period.StartDate.ToString("yyyyMM") + "01", "yyyyMMdd", null);
+			var budgets = _budgetRepository.GetAll();
 			do
 			{
-				var budgets = _budgetRepository.GetAll();
-				var yearMonth = currentMonth.ToString("yyyyMM");
-				var budget = budgets.FirstOrDefault(x => x.YearMonth == yearMonth);
+				var budget = budgets.FirstOrDefault(x => x.YearMonth == currentMonth.ToString("yyyyMM"));
 				if (budget != null)
 				{
 					var dailyAmount = budget.DailyAmount();
-					var intervalDays = period.OverlappingDays(currentMonth);
+					var intervalDays = period.OverlappingDays(budget.YearMonthInDateTime);
 					yield return intervalDays * dailyAmount;
 				}
 
