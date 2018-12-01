@@ -41,23 +41,30 @@ namespace BudgetServiceTdd
 			{
 				var yearMonth = currentMonth.Year + TransToDateFormat(currentMonth.Month);
 				var dailyAmount = _budgetLookUp.ContainsKey(yearMonth) ? _budgetLookUp[yearMonth] : 0;
-				int intervalDays;
-				if (IsLastMonth(endDate, currentMonth))
-				{
-					intervalDays = endDate.Day;
-				}
-				else if (IsFirstMonth(startDate, currentMonth))
-				{
-					intervalDays = (DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month) - startDate.Day + 1);
-				}
-				else
-				{
-					intervalDays = DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month);
-				}
+				var intervalDays = OverlappingDays(startDate, endDate, currentMonth);
 				yield return intervalDays * dailyAmount;
 
 				currentMonth = currentMonth.AddMonths(1);
 			} while (currentMonth <= endDate);
+		}
+
+		private static int OverlappingDays(DateTime startDate, DateTime endDate, DateTime currentMonth)
+		{
+			int intervalDays;
+			if (IsLastMonth(endDate, currentMonth))
+			{
+				intervalDays = endDate.Day;
+			}
+			else if (IsFirstMonth(startDate, currentMonth))
+			{
+				intervalDays = (DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month) - startDate.Day + 1);
+			}
+			else
+			{
+				intervalDays = DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month);
+			}
+
+			return intervalDays;
 		}
 
 		private static bool IsFirstMonth(DateTime startDate, DateTime currentMonth)
