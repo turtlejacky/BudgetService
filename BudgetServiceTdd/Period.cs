@@ -13,24 +13,24 @@ namespace BudgetServiceTdd
 		public DateTime StartDate { get; private set; }
 		public DateTime EndDate { get; private set; }
 
-		public int OverlappingDays(DateTime currentMonth)
+		public int OverlappingDays(DateTime queryMonth)
 		{
 			if (InvalidDate())
 			{
 				return 0;
 			}
 			var intervalDays = 0;
-			if (IsLastMonth(EndDate, currentMonth))
+			if (queryMonth.Month == EndDate.Month && queryMonth.Year == EndDate.Year)
 			{
 				intervalDays = EndDate.Day;
 			}
-			else if (IsFirstMonth(StartDate, currentMonth))
+			else if (queryMonth.Month == StartDate.Month && queryMonth.Year == StartDate.Year)
 			{
-				intervalDays = (DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month) - StartDate.Day + 1);
+				intervalDays = (DateTime.DaysInMonth(queryMonth.Year, queryMonth.Month) - StartDate.Day + 1);
 			}
-			else if (currentMonth > StartDate && currentMonth < EndDate)
+			else if (queryMonth > StartDate && queryMonth < EndDate)
 			{
-				intervalDays = DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month);
+				intervalDays = DateTime.DaysInMonth(queryMonth.Year, queryMonth.Month);
 			}
 
 			return intervalDays;
@@ -39,16 +39,6 @@ namespace BudgetServiceTdd
 		private bool InvalidDate()
 		{
 			return StartDate > EndDate;
-		}
-
-		private static bool IsFirstMonth(DateTime startDate, DateTime currentMonth)
-		{
-			return currentMonth.Month == startDate.Month && currentMonth.Year == startDate.Year;
-		}
-
-		private static bool IsLastMonth(DateTime endDate, DateTime currentMonth)
-		{
-			return currentMonth.Month == endDate.Month && currentMonth.Year == endDate.Year;
 		}
 	}
 }
