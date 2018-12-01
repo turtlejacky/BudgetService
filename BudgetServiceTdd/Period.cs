@@ -13,8 +13,8 @@ namespace BudgetServiceTdd
 			_monthHandler = InitialMonthHandler();
 		}
 
-		public DateTime StartDate { get; private set; }
-		public DateTime EndDate { get; private set; }
+		private DateTime StartDate { get; set; }
+		private DateTime EndDate { get; set; }
 
 		public int OverlappingDays(DateTime queryMonth)
 		{

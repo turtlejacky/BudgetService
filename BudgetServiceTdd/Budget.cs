@@ -7,7 +7,7 @@ namespace BudgetServiceTdd
 		public string YearMonth { get; set; }
 		public int Amount { get; set; }
 
-		public int DaysInMonth => DateTime.DaysInMonth(YearMonthInDateTime.Year, YearMonthInDateTime.Month);
+		private int DaysInMonth => DateTime.DaysInMonth(YearMonthInDateTime.Year, YearMonthInDateTime.Month);
 
 		public DateTime YearMonthInDateTime => DateTime.ParseExact(YearMonth, "yyyyMM", null);
 
