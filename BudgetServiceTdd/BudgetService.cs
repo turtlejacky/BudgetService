@@ -44,21 +44,20 @@ namespace BudgetServiceTdd
 				{
 					var yearMonth = year + TransToDateFormat(month);
 					var dailyAmount = _budgetLookUp.ContainsKey(yearMonth) ? _budgetLookUp[yearMonth] : 0;
+					int intervalDays;
 					if (IsLastMonth(endDate, month, year))
 					{
-						var intervalDays = endDate.Day;
-						yield return intervalDays * dailyAmount;
+						intervalDays = endDate.Day;
 					}
 					else if (IsFirstMonth(startDate, month, year))
 					{
-						var intervalDays = (DateTime.DaysInMonth(year, month) - startDate.Day + 1);
-						yield return intervalDays * dailyAmount;
+						intervalDays = (DateTime.DaysInMonth(year, month) - startDate.Day + 1);
 					}
 					else
 					{
-						var intervalDays = DateTime.DaysInMonth(year, month);
-						yield return intervalDays * dailyAmount;
+						intervalDays = DateTime.DaysInMonth(year, month);
 					}
+					yield return intervalDays * dailyAmount;
 				}
 			}
 		}
