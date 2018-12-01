@@ -40,18 +40,13 @@ namespace BudgetServiceTdd
 			var currentMonth = DateTime.ParseExact(period.StartDate.ToString("yyyyMM") + "01", "yyyyMMdd", null);
 			do
 			{
-				var yearMonth = currentMonth.Year + TransToDateFormat(currentMonth.Month);
+				var yearMonth = currentMonth.ToString("yyyyMM");
 				var dailyAmount = _budgetLookUp.ContainsKey(yearMonth) ? _budgetLookUp[yearMonth] : 0;
 				var intervalDays = period.OverlappingDays(currentMonth);
 				yield return intervalDays * dailyAmount;
 
 				currentMonth = currentMonth.AddMonths(1);
 			} while (currentMonth <= period.EndDate);
-		}
-
-		private string TransToDateFormat(int i)
-		{
-			return i < 10 ? "0" + i : i.ToString();
 		}
 	}
 }
