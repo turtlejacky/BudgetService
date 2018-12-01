@@ -35,20 +35,8 @@ namespace BudgetServiceTdd
 		private IEnumerable<int> GetYearMonthList(DateTime startDate, DateTime endDate)
 		{
 			var period = new Period(startDate, endDate);
-			var currentMonth = DateTime.ParseExact(period.StartDate.ToString("yyyyMM") + "01", "yyyyMMdd", null);
 			var budgets = _budgetRepository.GetAll();
-			do
-			{
-				var budget = budgets.FirstOrDefault(x => x.YearMonth == currentMonth.ToString("yyyyMM"));
-				if (budget != null)
-				{
-					var dailyAmount = budget.DailyAmount();
-					var intervalDays = period.OverlappingDays(budget.YearMonthInDateTime);
-					yield return intervalDays * dailyAmount;
-				}
-
-				currentMonth = currentMonth.AddMonths(1);
-			} while (currentMonth <= period.EndDate);
+			return budgets.Select(b => b.DailyAmount() * period.OverlappingDays(b.YearMonthInDateTime));
 		}
 	}
 }
