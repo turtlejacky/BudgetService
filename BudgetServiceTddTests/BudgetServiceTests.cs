@@ -19,6 +19,14 @@ namespace BudgetServiceTdd.Tests
         }
 
         [TestMethod]
+        public void Cross_2years()
+        {
+            _startDate = new DateTime(2017, 12, 31);
+            _endDate = new DateTime(2019, 1, 3);
+            TheBudgetShouldBe(365);
+        }
+
+        [TestMethod]
         public void Cross_two_months()
         {
             _startDate = new DateTime(2018, 4, 30);
@@ -27,6 +35,13 @@ namespace BudgetServiceTdd.Tests
         }
 
         [TestMethod]
+        public void Cross_years()
+        {
+            _startDate = new DateTime(2017, 12, 31);
+            _endDate = new DateTime(2018, 1, 3);
+            TheBudgetShouldBe(3);
+        }
+        [TestMethod]
         public void Only_one_month_sum_of_2days()
         {
             _startDate = new DateTime(2018, 4, 1);
@@ -56,8 +71,10 @@ namespace BudgetServiceTdd.Tests
             var budgetToLookUp = _budgetService.SetBudgetToLookUp();
             var expected = new Dictionary<string, int>()
             {
-                { "201804",10},
-                { "201805",1}
+                {"201801",1},
+                {"201804",10},
+                {"201805",1},
+                {"201901",1},
             };
             expected.ToExpectedObject().ShouldEqual(budgetToLookUp);
         }
@@ -76,12 +93,22 @@ namespace BudgetServiceTdd.Tests
             {
                 new Budget
                 {
+                    YearMonth = "201801",
+                    Amount = 31
+                },
+                new Budget
+                {
                     YearMonth = "201804",
                     Amount = 300
                 },
                 new Budget
                 {
                     YearMonth = "201805",
+                    Amount = 31
+                },
+                new Budget
+                {
+                    YearMonth = "201901",
                     Amount = 31
                 }
             };

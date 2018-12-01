@@ -37,11 +37,13 @@ namespace BudgetServiceTdd
         {
             for (var year = startDate.Year; year <= endDate.Year; year++)
             {
-                for (var month = startDate.Month; month <= endDate.Month; month++)
+                var startMonth = year == startDate.Year ? startDate.Month : 1;
+                var endMonth = year == endDate.Year ? endDate.Month : 12;
+                for (var month = startMonth; month <= endMonth; month++)
                 {
                     var yearMonth = year + TransToDateFormat(month);
                     var budget = _budgetLookUp.ContainsKey(yearMonth) ? _budgetLookUp[yearMonth] : 0;
-                    if (IsLsatMonth(endDate, month, year))
+                    if (IsLastMonth(endDate, month, year))
                     {
                         yield return endDate.Day * budget;
                     }
@@ -62,7 +64,7 @@ namespace BudgetServiceTdd
             return month == start.Month && year == start.Year;
         }
 
-        private bool IsLsatMonth(DateTime endDate, int month, int year)
+        private bool IsLastMonth(DateTime endDate, int month, int year)
         {
             return month == endDate.Month && year == endDate.Year;
         }
