@@ -1,4 +1,5 @@
 ﻿using System;
+using BudgetServiceTdd.Handlers;
 
 namespace BudgetServiceTdd
 {
@@ -13,8 +14,8 @@ namespace BudgetServiceTdd
 			_monthHandler = InitialMonthHandler();
 		}
 
-		private DateTime StartDate { get; set; }
-		private DateTime EndDate { get; set; }
+		public DateTime StartDate { get; set; }
+		public DateTime EndDate { get; set; }
 
 		public int OverlappingDays(DateTime queryMonth)
 		{

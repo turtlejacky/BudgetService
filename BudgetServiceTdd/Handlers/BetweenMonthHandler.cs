@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BudgetServiceTdd
+namespace BudgetServiceTdd.Handlers
 {
 	internal class BetweenMonthHandler : MonthHandler
 	{

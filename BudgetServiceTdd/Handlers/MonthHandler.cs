@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BudgetServiceTdd
+namespace BudgetServiceTdd.Handlers
 {
 	public abstract class MonthHandler
 	{

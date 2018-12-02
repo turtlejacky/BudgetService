@@ -15,8 +15,7 @@ namespace BudgetServiceTdd
 		public double TotalAmount(DateTime start, DateTime end)
 		{
 			var period = new Period(start, end);
-			return _budgetRepository.GetAll() .Select(b => b.DailyAmount * period.OverlappingDays(b.YearMonthInDateTime)).Sum();
+			return _budgetRepository.GetAll().Select(b => b.DailyAmount * period.OverlappingDays(b.YearMonthInDateTime)).Sum();
 		}
-
 	}
 }
